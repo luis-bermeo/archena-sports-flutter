@@ -32,12 +32,23 @@ class Court {
       category: json['category'],
       description: json['description'],
       rules: json['rules'],
-      imageUrl: json['image_url'],
+      imageUrl: json['image_url'] ?? _getImageForCategory(json['category']),
       priceCents: json['price_cents'],
       slotMinutes: json['slot_minutes'],
       openingTime: json['opening_time'],
       closingTime: json['closing_time'],
       openDays: List<int>.from(json['open_days'] ?? []),
     );
+  }
+
+  static String? _getImageForCategory(String category) {
+    switch (category.toLowerCase()) {
+      case 'tenis': return 'court-tenis.jpg';
+      case 'fronton': return 'court-fronton.jpg';
+      case 'pabellon': return 'court-pabellon.jpg';
+      case 'futbol': return 'court-futbol.jpg';
+      case 'baloncesto': return 'court-baloncesto.jpg';
+      default: return null;
+    }
   }
 }
