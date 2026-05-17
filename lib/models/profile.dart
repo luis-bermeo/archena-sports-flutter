@@ -2,7 +2,8 @@ class Profile {
   final String id;
   final String? email;
   final String? fullName;
-  final String? phone;
+  final String? dni;
+  final String? fechaNacimiento;
   final bool esResidente;
 
   Profile({
@@ -10,6 +11,8 @@ class Profile {
     this.email,
     this.fullName,
     this.phone,
+    this.dni,
+    this.fechaNacimiento,
     required this.esResidente,
   });
 
@@ -19,6 +22,8 @@ class Profile {
       email: json['email'],
       fullName: json['full_name'],
       phone: json['phone'],
+      dni: json['dni'],
+      fechaNacimiento: json['fecha_nacimiento'],
       esResidente: json['es_residente'] ?? false,
     );
   }

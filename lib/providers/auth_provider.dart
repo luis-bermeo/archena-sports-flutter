@@ -73,18 +73,19 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> signUp(String email, String password, String nombre, String apellidos, String dni, String fechaNacimiento) async {
+  Future<void> signUp(String email, String password, String fullName, String phone, String dni, String fechaNacimiento) async {
     final response = await _supabase.auth.signUp(
       email: email,
       password: password,
-      data: {'full_name': '$nombre $apellidos'},
+      data: {'full_name': fullName},
     );
     if (response.user != null) {
       // Creamos el perfil manualmente por si no hay un trigger en la base de datos
       try {
         await _supabase.from('profiles').upsert({
           'id': response.user!.id,
-          'full_name': '$nombre $apellidos',
+          'full_name': fullName,
+          'phone': phone,
           'dni': dni,
           'fecha_nacimiento': fechaNacimiento,
           'es_residente': false,

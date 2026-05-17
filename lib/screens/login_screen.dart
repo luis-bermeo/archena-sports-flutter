@@ -14,8 +14,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
-  final _nameCtrl = TextEditingController();
-  final _apellidosCtrl = TextEditingController();
+  final _fullNameCtrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
   final _dniCtrl = TextEditingController();
   final _fechaNacimientoCtrl = TextEditingController();
   bool _isLoading = false;
@@ -34,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
         await auth.signUp(
           _emailCtrl.text.trim(),
           _passwordCtrl.text.trim(),
-          _nameCtrl.text.trim(),
-          _apellidosCtrl.text.trim(),
+          _fullNameCtrl.text.trim(),
+          _phoneCtrl.text.trim(),
           _dniCtrl.text.trim(),
           _fechaNacimientoCtrl.text.trim(),
         );
@@ -86,10 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 24),
                       if (!_isLogin) ...[
                         TextField(
-                          controller: _nameCtrl,
+                          controller: _fullNameCtrl,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            labelText: 'Nombre',
+                            labelText: 'Nombre Completo',
                             labelStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.white30),
@@ -103,10 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 16),
                         TextField(
-                          controller: _apellidosCtrl,
+                          controller: _phoneCtrl,
                           style: const TextStyle(color: Colors.white),
+                          keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            labelText: 'Apellidos',
+                            labelText: 'Teléfono',
                             labelStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.white30),
