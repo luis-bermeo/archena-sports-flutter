@@ -14,15 +14,32 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
+  final _nameCtrl = TextEditingController();
+  final _apellidosCtrl = TextEditingController();
+  final _dniCtrl = TextEditingController();
+  final _fechaNacimientoCtrl = TextEditingController();
   bool _isLoading = false;
+  bool _isLogin = true;
 
-  void _login() async {
+  void _submit() async {
     setState(() => _isLoading = true);
     try {
-      await Provider.of<AuthProvider>(context, listen: false).signIn(
-        _emailCtrl.text.trim(),
-        _passwordCtrl.text.trim(),
-      );
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      if (_isLogin) {
+        await auth.signIn(
+          _emailCtrl.text.trim(),
+          _passwordCtrl.text.trim(),
+        );
+      } else {
+        await auth.signUp(
+          _emailCtrl.text.trim(),
+          _passwordCtrl.text.trim(),
+          _nameCtrl.text.trim(),
+          _apellidosCtrl.text.trim(),
+          _dniCtrl.text.trim(),
+          _fechaNacimientoCtrl.text.trim(),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -58,15 +75,85 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Acceso Ciudadano',
-                        style: TextStyle(
+                      Text(
+                        _isLogin ? 'Acceso Ciudadano' : 'Registro',
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 24),
+                      if (!_isLogin) ...[
+                        TextField(
+                          controller: _nameCtrl,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Nombre',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white30),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _apellidosCtrl,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Apellidos',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white30),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _dniCtrl,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'DNI / NIE',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white30),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _fechaNacimientoCtrl,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Fecha de Nacimiento (DD/MM/AAAA)',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white30),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                       TextField(
                         controller: _emailCtrl,
                         style: const TextStyle(color: Colors.white),
@@ -74,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: 'Email',
                           labelStyle: const TextStyle(color: Colors.white70),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                            borderSide: const BorderSide(color: Colors.white30),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -92,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: 'Contraseña',
                           labelStyle: const TextStyle(color: Colors.white70),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                            borderSide: const BorderSide(color: Colors.white30),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -106,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: _isLoading ? null : _login,
+                          onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: const Color(0xFF004A98),
@@ -116,10 +203,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           child: _isLoading
                               ? const CircularProgressIndicator()
-                              : const Text(
-                                  'Ingresar',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              : Text(
+                                  _isLogin ? 'Ingresar' : 'Registrarse',
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
+                        child: Text(
+                          _isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Ingresa',
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

@@ -73,14 +73,27 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> signUp(String email, String password, String fullName) async {
+  Future<void> signUp(String email, String password, String nombre, String apellidos, String dni, String fechaNacimiento) async {
     final response = await _supabase.auth.signUp(
       email: email,
       password: password,
+      data: {'full_name': '$nombre $apellidos'},
     );
     if (response.user != null) {
-      // Create profile automatically or handled by a trigger in DB?
-      // Usually trigger handles it. If not, insert it here.
+      // Creamos el perfil manualmente por si no hay un trigger en la base de datos
+      try {
+        await _supabase.from('profiles').upsert({
+          'id': response.user!.id,
+          'full_name': '$nombre $apellidos',
+          'dni': dni,
+          'fecha_nacimiento': fechaNacimiento,
+          'es_residente': false,
+        });
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error creando perfil manual: $e');
+        }
+      }
     }
   }
 

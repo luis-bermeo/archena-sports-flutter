@@ -44,11 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
-            const ArchenaLogo(size: 40),
-            const SizedBox(width: 12),
-            const Text(
+            ArchenaLogo(size: 40),
+            SizedBox(width: 12),
+            Text(
               'Archena Sports',
               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         errorBuilder: (c, e, s) => Container(
                                           height: 120,
                                           color: Colors.white10,
-                                          child: const Icon(Icons.sports, color: Colors.white50, size: 50),
+                                          child: const Icon(Icons.sports, color: Colors.white54, size: 50),
                                         ),
                                       ),
                                     )
@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Colors.white10,
                                         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                                       ),
-                                      child: const Icon(Icons.sports, color: Colors.white50, size: 50),
+                                      child: const Icon(Icons.sports, color: Colors.white54, size: 50),
                                     ),
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),

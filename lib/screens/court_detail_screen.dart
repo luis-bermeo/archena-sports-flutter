@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:math';
 
 import '../providers/auth_provider.dart';
 import '../models/court.dart';
@@ -142,7 +141,7 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
             if (_court!.imageUrl != null)
               Image.network(_court!.imageUrl!, height: 250, width: double.infinity, fit: BoxFit.cover),
             if (_court!.imageUrl == null)
-              Container(height: 250, color: Colors.black26, child: const Center(child: Icon(Icons.sports, size: 80, color: Colors.white50))),
+              Container(height: 250, color: Colors.black26, child: const Center(child: Icon(Icons.sports, size: 80, color: Colors.white54))),
             
             Expanded(
               child: SingleChildScrollView(
