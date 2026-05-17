@@ -170,7 +170,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                 const SizedBox(height: 4),
                                 Text('Fecha: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(b['blocked_date']))}', style: const TextStyle(color: Colors.white70)),
                                 if (b['reason'] != null && b['reason'].toString().isNotEmpty)
-                                  Text('Motivo: ${b['reason']}', style: const TextStyle(color: Colors.white50)),
+                                  Text('Motivo: ${b['reason']}', style: const TextStyle(color: Colors.white54)),
                               ],
                             ),
                             trailing: IconButton(
