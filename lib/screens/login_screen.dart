@@ -39,11 +39,40 @@ class _LoginScreenState extends State<LoginScreen> {
           _dniCtrl.text.trim(),
           _fechaNacimientoCtrl.text.trim(),
         );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('¡Registro exitoso! Por favor, revisa tu correo y confirma tu email para poder entrar.'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 5),
+            ),
+          );
+          setState(() {
+            _isLogin = true;
+            _passwordCtrl.clear();
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
+        String errorMsg = e.toString();
+        if (errorMsg.toLowerCase().contains('email not confirmed')) {
+          errorMsg = 'Debes confirmar tu correo electrónico antes de ingresar. Revisa tu bandeja de entrada.';
+        } else if (errorMsg.toLowerCase().contains('invalid login credentials')) {
+          errorMsg = 'Credenciales incorrectas. Verifica tu email y contraseña.';
+        } else if (errorMsg.toLowerCase().contains('user already registered')) {
+          errorMsg = 'Ya existe un usuario con este correo electrónico.';
+        } else if (errorMsg.toLowerCase().contains('password should be at least')) {
+          errorMsg = 'La contraseña es muy débil. Debe tener al menos 6 caracteres.';
+        } else {
+          errorMsg = 'Ha ocurrido un error: $errorMsg';
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
+          SnackBar(
+            content: Text(errorMsg, style: const TextStyle(fontWeight: FontWeight.bold)),
+            backgroundColor: Colors.redAccent,
+          ),
         );
       }
     } finally {
@@ -205,8 +234,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: _isLoading
                               ? const CircularProgressIndicator()
                               : Text(
-                                  _isLogin ? 'Ingresar' : 'Registrarse',
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  _isLogin ? 'INGRESAR' : 'REGÍSTRATE',
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1.2),
                                 ),
                         ),
                       ),

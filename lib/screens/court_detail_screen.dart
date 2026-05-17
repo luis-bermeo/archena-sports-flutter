@@ -139,7 +139,9 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
         child: Column(
           children: [
             if (_court!.imageUrl != null)
-              Image.network(_court!.imageUrl!, height: 250, width: double.infinity, fit: BoxFit.cover),
+              _court!.imageUrl!.startsWith('http')
+                  ? Image.network(_court!.imageUrl!, height: 250, width: double.infinity, fit: BoxFit.cover)
+                  : Image.asset('assets/images/${_court!.imageUrl!.split('/').last}', height: 250, width: double.infinity, fit: BoxFit.cover),
             if (_court!.imageUrl == null)
               Container(height: 250, color: Colors.black26, child: const Center(child: Icon(Icons.sports, size: 80, color: Colors.white54))),
             
@@ -173,11 +175,24 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
                           const Text('Fecha:', style: TextStyle(color: Colors.white, fontSize: 16)),
                           ElevatedButton.icon(
                             onPressed: () async {
+                              DateTime initial = _selectedDate;
+                              if (!_court!.openDays.contains(initial.weekday)) {
+                                for (int i = 0; i <= 14; i++) {
+                                  DateTime check = DateTime.now().add(Duration(days: i));
+                                  if (_court!.openDays.contains(check.weekday)) {
+                                    initial = check;
+                                    break;
+                                  }
+                                }
+                              }
                               final d = await showDatePicker(
                                 context: context,
-                                initialDate: _selectedDate,
+                                initialDate: initial,
                                 firstDate: DateTime.now(),
                                 lastDate: DateTime.now().add(const Duration(days: 14)),
+                                selectableDayPredicate: (DateTime val) {
+                                  return _court!.openDays.contains(val.weekday);
+                                },
                               );
                               if (d != null) {
                                 setState(() {

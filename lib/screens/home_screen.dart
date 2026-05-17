@@ -142,16 +142,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (court.imageUrl != null)
                                     ClipRRect(
                                       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                                      child: Image.network(
-                                        court.imageUrl!,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (c, e, s) => Container(
-                                          height: 120,
-                                          color: Colors.white10,
-                                          child: const Icon(Icons.sports, color: Colors.white54, size: 50),
-                                        ),
-                                      ),
+                                      child: court.imageUrl!.startsWith('http')
+                                          ? Image.network(
+                                              court.imageUrl!,
+                                              height: 120,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (c, e, s) => Container(
+                                                height: 120,
+                                                color: Colors.white10,
+                                                child: const Icon(Icons.sports, color: Colors.white54, size: 50),
+                                              ),
+                                            )
+                                          : Image.asset(
+                                              'assets/images/${court.imageUrl!.split('/').last}',
+                                              height: 120,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (c, e, s) => Container(
+                                                height: 120,
+                                                color: Colors.white10,
+                                                child: const Icon(Icons.sports, color: Colors.white54, size: 50),
+                                              ),
+                                            ),
                                     )
                                   else
                                     Container(
