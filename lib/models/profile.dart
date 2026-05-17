@@ -2,6 +2,7 @@ class Profile {
   final String id;
   final String? email;
   final String? fullName;
+  final String? phone;
   final String? dni;
   final String? fechaNacimiento;
   final bool esResidente;
